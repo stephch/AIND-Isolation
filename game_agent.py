@@ -212,10 +212,12 @@ class CustomPlayer:
 
         else:
             if maximizing_player:
-                return max((self.minimax(game.forecast_move(m), depth - 1, False), m) for m in game.get_legal_moves())
+                (best_score, move), best_move = max((self.minimax(game.forecast_move(m), depth - 1, False), m) for m in game.get_legal_moves())
+                return best_score, best_move
 
             else:
-                return min((self.minimax(game.forecast_move(m), depth - 1, True), m) for m in game.get_legal_moves())
+                (best_score, move), best_move = min((self.minimax(game.forecast_move(m), depth - 1, True), m) for m in game.get_legal_moves())
+                return best_score, best_move
  
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
