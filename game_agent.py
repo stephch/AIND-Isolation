@@ -192,30 +192,25 @@ class CustomPlayer:
                 to pass the project unit tests; you cannot call any other
                 evaluation function directly.
         """
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise Timeout()
 
         if depth == 0 or len(game.get_legal_moves()) == 0:
             return self.score(game, self), (-1, -1)
 
-        else:
+        if depth == 1:
             if maximizing_player:
-                best_score = float("-inf")
-                best_move = (-1, -1)
-                for move in game.get_legal_moves():
-                    new_score, new_move = self.minimax(game.forecast_move(move), depth - 1, False)
-                    if new_score > best_score:
-                            best_score = new_score
-                            best_move = move
-                return best_score, best_move
+                return max((self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves())
 
             else:
-                best_score = float("+inf")
-                best_move = (-1, -1)
-                for move in game.get_legal_moves():
-                    new_score, new_move = self.minimax(game.forecast_move(move), depth - 1, True)
-                    if new_score < best_score:
-                            best_score = new_score
-                            best_move = move
-                return best_score, best_move
+                return min((self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves())
+
+        else:
+            if maximizing_player:
+                return max((self.minimax(game.forecast_move(m), depth - 1, False), m) for m in game.get_legal_moves())
+
+            else:
+                return min((self.minimax(game.forecast_move(m), depth - 1, True), m) for m in game.get_legal_moves())
  
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
@@ -255,22 +250,24 @@ class CustomPlayer:
                 to pass the project unit tests; you cannot call any other
                 evaluation function directly.
         """
-        
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise Timeout()
+
         if depth == 0 or len(game.get_legal_moves()) == 0:
             return self.score(game, self), (-1, -1)
-
+            
         else:
             if maximizing_player:
                 best_score = float("-inf")
                 best_move = (-1, -1)
                 for move in game.get_legal_moves():
                     new_score, new_move = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, False)
-                    alpha = max(new_score, alpha)
-                    if beta <= alpha:
-                        break
                     if new_score > best_score:
                             best_score = new_score
                             best_move = move
+                    alpha = max(new_score, alpha)
+                    if beta <= alpha:
+                        break
                 return best_score, best_move
 
             else:
@@ -278,11 +275,11 @@ class CustomPlayer:
                 best_move = (-1, -1)
                 for move in game.get_legal_moves():
                     new_score, new_move = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, True)
+                    if new_score < best_score:
+                        best_score = new_score
+                        best_move = move
                     beta = min(new_score, beta)
                     if beta <= alpha:
                         break
-                    if new_score < best_score:
-                            best_score = new_score
-                            best_move = move
                 return best_score, best_move
 
