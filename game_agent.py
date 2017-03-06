@@ -134,32 +134,37 @@ class CustomPlayer:
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
-        try:
-            if self.iterative:
-                pass
-            else:
-                if self.method == 'minimax':
-                    best_score, best_move = self.minimax(game, self.search_depth, True)
-                if self.method == 'alphabeta':
-                    best_score, best_move = self.alphabeta(game, self.search_depth, True)
-        #    pass
+        if len(legal_moves) == 0:
+            return (-1, -1)
 
-        except Timeout:
-            return best_move
+        if game.move_count <= 1:
+            score, move = max((self.score(game, self), m) for m in legal_moves)
+            return move
 
-
-    def ids(self, game, depth):
-        if game.is_winner(self):
-            return game.__last_player_move__
         else:
-            if self.time_left < self.TIMER_THRESHOLD:
-                raise Timeout 
-            else:
-                for move in game.get_legal_moves():
-                    score, new_move = self.ids(game.forecast_move(move), depth - 1)
-                    if new_move is not None:
-                        return move
-        return None
+            maximizing = game.active_player == game.__player_1__
+            try:
+                if self.iterative:
+                    depth = 0
+                    if self.method == 'minimax':
+                        while True:
+                            best_score, best_move = self.minimax(game, depth, maximizing)
+                            depth += 1
+                    if self.method == 'alphabeta':
+                        while True:
+                            best_score, best_move = self.alphabeta(game, depth, maximizing)
+                            depth += 1
+                else:
+                    if self.method == 'minimax':
+                        best_score, best_move = self.minimax(game, self.search_depth, maximizing)
+                        return best_move
+
+                    if self.method == 'alphabeta':
+                        best_score, best_move = self.alphabeta(game, self.search_depth, maximizing)
+                        return best_move
+
+            except Timeout:
+                return best_move
 
     def minimax(self, game, depth, maximizing_player=True):
         """Implement the minimax search algorithm as described in the lectures.
@@ -255,7 +260,7 @@ class CustomPlayer:
 
         if depth == 0 or len(game.get_legal_moves()) == 0:
             return self.score(game, self), (-1, -1)
-            
+
         else:
             if maximizing_player:
                 best_score = float("-inf")
