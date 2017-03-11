@@ -1,0 +1,164 @@
+Results with a evaluation function that evaluates my moves = len(game.get_legal_moves(player))
+
+Playing Matches:
+----------
+tournament.py:100: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
+  warnings.warn(TIMEOUT_WARNING)
+  Match 1: ID_Improved vs   Random    	Result: 14 to 6
+  Match 2: ID_Improved vs   MM_Null   	Result: 16 to 4
+  Match 3: ID_Improved vs   MM_Open   	Result: 15 to 5
+  Match 4: ID_Improved vs MM_Improved 	Result: 15 to 5
+  Match 5: ID_Improved vs   AB_Null   	Result: 13 to 7
+  Match 6: ID_Improved vs   AB_Open   	Result: 12 to 8
+  Match 7: ID_Improved vs AB_Improved 	Result: 13 to 7
+
+
+Results:
+----------
+ID_Improved         70.00%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 16 to 4
+  Match 2:   Student   vs   MM_Null   	Result: 18 to 2
+  Match 3:   Student   vs   MM_Open   	Result: 16 to 4
+  Match 4:   Student   vs MM_Improved 	Result: 13 to 7
+  Match 5:   Student   vs   AB_Null   	Result: 13 to 7
+  Match 6:   Student   vs   AB_Open   	Result: 10 to 10
+  Match 7:   Student   vs AB_Improved 	Result: 13 to 7
+
+
+Results:
+----------
+Student             70.71%
+
+
+
+Evaluation function: float(my_moves - opp_moves)
+
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 13 to 7
+tournament.py:100: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
+  warnings.warn(TIMEOUT_WARNING)
+  Match 2: ID_Improved vs   MM_Null   	Result: 15 to 5
+  Match 3: ID_Improved vs   MM_Open   	Result: 12 to 8
+  Match 4: ID_Improved vs MM_Improved 	Result: 11 to 9
+  Match 5: ID_Improved vs   AB_Null   	Result: 13 to 7
+  Match 6: ID_Improved vs   AB_Open   	Result: 8 to 12
+  Match 7: ID_Improved vs AB_Improved 	Result: 10 to 10
+
+
+Results:
+----------
+ID_Improved         58.57%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 13 to 7
+  Match 2:   Student   vs   MM_Null   	Result: 14 to 6
+  Match 3:   Student   vs   MM_Open   	Result: 17 to 3
+  Match 4:   Student   vs MM_Improved 	Result: 17 to 3
+  Match 5:   Student   vs   AB_Null   	Result: 11 to 9
+  Match 6:   Student   vs   AB_Open   	Result: 9 to 11
+  Match 7:   Student   vs AB_Improved 	Result: 6 to 14
+
+
+Results:
+----------
+Student             62.14%
+
+
+---
+
+Evaluating function: float(my_moves - 0.3 * opp_moves)
+
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 19 to 1
+tournament.py:100: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
+  warnings.warn(TIMEOUT_WARNING)
+  Match 2: ID_Improved vs   MM_Null   	Result: 14 to 6
+  Match 3: ID_Improved vs   MM_Open   	Result: 16 to 4
+  Match 4: ID_Improved vs MM_Improved 	Result: 15 to 5
+  Match 5: ID_Improved vs   AB_Null   	Result: 12 to 8
+  Match 6: ID_Improved vs   AB_Open   	Result: 10 to 10
+  Match 7: ID_Improved vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+ID_Improved         70.00%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 15 to 5
+  Match 2:   Student   vs   MM_Null   	Result: 19 to 1
+  Match 3:   Student   vs   MM_Open   	Result: 17 to 3
+  Match 4:   Student   vs MM_Improved 	Result: 14 to 6
+  Match 5:   Student   vs   AB_Null   	Result: 10 to 10
+  Match 6:   Student   vs   AB_Open   	Result: 8 to 12
+  Match 7:   Student   vs AB_Improved 	Result: 14 to 6
+
+
+Results:
+----------
+Student             69.29%
+
+----
+
+Evaluating function: float(my_moves^2)
+
+Playing Matches:
+----------
+tournament.py:100: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
+  warnings.warn(TIMEOUT_WARNING)
+  Match 1: ID_Improved vs   Random    	Result: 13 to 7
+  Match 2: ID_Improved vs   MM_Null   	Result: 14 to 6
+  Match 3: ID_Improved vs   MM_Open   	Result: 14 to 6
+  Match 4: ID_Improved vs MM_Improved 	Result: 13 to 7
+  Match 5: ID_Improved vs   AB_Null   	Result: 9 to 11
+  Match 6: ID_Improved vs   AB_Open   	Result: 8 to 12
+  Match 7: ID_Improved vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+ID_Improved         59.29%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random    	Result: 14 to 6
+  Match 2:   Student   vs   MM_Null   	Result: 17 to 3
+  Match 3:   Student   vs   MM_Open   	Result: 15 to 5
+  Match 4:   Student   vs MM_Improved 	Result: 14 to 6
+  Match 5:   Student   vs   AB_Null   	Result: 15 to 5
+  Match 6:   Student   vs   AB_Open   	Result: 15 to 5
+  Match 7:   Student   vs AB_Improved 	Result: 9 to 11
+
+
+Results:
+----------
+Student             70.71%
+

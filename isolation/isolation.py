@@ -349,3 +349,4 @@ class Board(object):
                 return self.__inactive_player__, move_history, "illegal move"
 
             self.apply_move(curr_move)
+            #print(self.to_string())

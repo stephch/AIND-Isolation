@@ -43,8 +43,10 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    #opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(len(game.get_legal_moves(player))) #- opp_moves)
+    if len(game.get_blank_spaces()) <= 5:
+        return float(len(game.get_legal_moves(player)) - len(game.get_legal_moves(game.get_opponent(player))))
+    else:
+        return float(len(game.get_legal_moves(player)))
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -77,7 +79,7 @@ class CustomPlayer:
     """
 
     def __init__(self, search_depth=3, score_fn=custom_score,
-                 iterative=True, method='minimax', timeout=10.):
+                 iterative=True, method='minimax', timeout=70.):
         self.search_depth = search_depth
         self.iterative = iterative
         self.score = score_fn
@@ -122,8 +124,8 @@ class CustomPlayer:
         """
 
         self.time_left = time_left
-
-        # TODO: finish this function!
+        # Timer threshold manually set for the tournament
+        #self.TIMER_THRESHOLD = 1
 
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning
@@ -134,27 +136,39 @@ class CustomPlayer:
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
+
+        # Return no moves if the player has no moves left    
         if len(legal_moves) == 0:
             return (-1, -1)
 
-        if game.move_count <= 1:
-            score, move = max((self.score(game, self), m) for m in legal_moves)
-            return move
+        # Set the best_move as the maximum available as the default move
+        score, best_move = max((self.score(game, self), m) for m in legal_moves)
+
+        # The opening move will be the default move
+        if game.move_count <= 1:   
+            return best_move
 
         else:
+            # Storing the boolean identifying if it is a maximizing player
             maximizing = game.active_player == game.__player_1__
             try:
                 if self.iterative:
-                    depth = 0
+                    # Start of the Iterative Deepening algorithm
+                    depth = 1
                     if self.method == 'minimax':
                         while True:
+                            if self.time_left() < self.TIMER_THRESHOLD:
+                                raise Timeout()
                             best_score, best_move = self.minimax(game, depth, maximizing)
                             depth += 1
                     if self.method == 'alphabeta':
                         while True:
+                            if self.time_left() < self.TIMER_THRESHOLD:
+                                raise Timeout()
                             best_score, best_move = self.alphabeta(game, depth, maximizing)
                             depth += 1
                 else:
+                    # Otherwise perform a fixed depth search using either Minimax or Alphabeta
                     if self.method == 'minimax':
                         best_score, best_move = self.minimax(game, self.search_depth, maximizing)
                         return best_move
@@ -164,6 +178,7 @@ class CustomPlayer:
                         return best_move
 
             except Timeout:
+                # Return the best_move identified so far if it times out
                 return best_move
 
     def minimax(self, game, depth, maximizing_player=True):
@@ -197,12 +212,15 @@ class CustomPlayer:
                 to pass the project unit tests; you cannot call any other
                 evaluation function directly.
         """
+        #self.TIMER_THRESHOLD = 1
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
+        # If there are no more legal moves, return no more moves
         if depth == 0 or len(game.get_legal_moves()) == 0:
             return self.score(game, self), (-1, -1)
 
+        # Initializing for depth 1
         if depth == 1:
             if maximizing_player:
                 return max((self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves())
@@ -210,6 +228,7 @@ class CustomPlayer:
             else:
                 return min((self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves())
 
+        # Recursive section of minimax, to search at one depth lower
         else:
             if maximizing_player:
                 (best_score, move), best_move = max((self.minimax(game.forecast_move(m), depth - 1, False), m) for m in game.get_legal_moves())
@@ -257,36 +276,50 @@ class CustomPlayer:
                 to pass the project unit tests; you cannot call any other
                 evaluation function directly.
         """
+        #self.TIMER_THRESHOLD = 1
+
+        # Timeout section for the iterative deepening section
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
+        # If there are no more legal moves, return no more moves
         if depth == 0 or len(game.get_legal_moves()) == 0:
             return self.score(game, self), (-1, -1)
 
         else:
+            # Maximizing node
             if maximizing_player:
                 best_score = float("-inf")
                 best_move = (-1, -1)
+                # Loop through all the children of the node
                 for move in game.get_legal_moves():
                     new_score, new_move = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, False)
+                    # Storing the maximum value and move
                     if new_score > best_score:
                             best_score = new_score
                             best_move = move
+                    # Updating the Alpha
                     alpha = max(new_score, alpha)
                     if beta <= alpha:
+                        # Prune if there are no values that can be considered further
                         break
                 return best_score, best_move
 
+            # Minimizing node
             else:
                 best_score = float("+inf")
                 best_move = (-1, -1)
+                # Loop through all the children of the node
                 for move in game.get_legal_moves():
                     new_score, new_move = self.alphabeta(game.forecast_move(move), depth - 1, alpha, beta, True)
+                    # Storing the minimum value and move
                     if new_score < best_score:
                         best_score = new_score
                         best_move = move
+                    # Updating the Beta
                     beta = min(new_score, beta)
                     if beta <= alpha:
+                        # Prune if there are no values that can be considered further
                         break
                 return best_score, best_move
 
