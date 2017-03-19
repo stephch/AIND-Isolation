@@ -7,7 +7,8 @@ You must test your agent's strength against a set of agents with known
 relative strength using tournament.py and include the results in your report.
 """
 import random
-
+import numpy
+import math
 
 class Timeout(Exception):
     """Subclass base exception for code clarity."""
@@ -42,8 +43,8 @@ def custom_score(game, player):
 
     if game.is_winner(player):
         return float("inf")
-
-    if len(game.get_blank_spaces()) <= 5:
+    
+    if len(game.get_blank_spaces()) <= game.width + 3:
         return float(len(game.get_legal_moves(player)) - len(game.get_legal_moves(game.get_opponent(player))))
     else:
         return float(len(game.get_legal_moves(player)))
@@ -79,7 +80,7 @@ class CustomPlayer:
     """
 
     def __init__(self, search_depth=3, score_fn=custom_score,
-                 iterative=True, method='minimax', timeout=100.):
+                 iterative=True, method='minimax', timeout=10.):
         self.search_depth = search_depth
         self.iterative = iterative
         self.score = score_fn
@@ -220,24 +221,37 @@ class CustomPlayer:
         if depth == 0 or len(game.get_legal_moves()) == 0:
             return self.score(game, self), (-1, -1)
 
-        # Initializing for depth 1
-        if depth == 1:
-            if maximizing_player:
-                return max((self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves())
-
-            else:
-                return min((self.score(game.forecast_move(m), self), m) for m in game.get_legal_moves())
-
         # Recursive section of minimax, to search at one depth lower
-        else:
-            if maximizing_player:
-                (best_score, move), best_move = max((self.minimax(game.forecast_move(m), depth - 1, False), m) for m in game.get_legal_moves())
-                return best_score, best_move
 
-            else:
-                (best_score, move), best_move = min((self.minimax(game.forecast_move(m), depth - 1, True), m) for m in game.get_legal_moves())
-                return best_score, best_move
- 
+        # Maximizing node
+        if maximizing_player:
+            best_score = float("-inf")
+            best_move = (-1, -1)
+            # Loop through all the children of the node
+            for move in game.get_legal_moves():
+                new_score, new_move = self.minimax(game.forecast_move(move), depth - 1, False)
+                # Storing the maximum value and move
+                if new_score > best_score:
+                    best_score = new_score
+                    best_move = move
+                if self.time_left() < self.TIMER_THRESHOLD:
+                    raise Timeout()
+            return best_score, best_move
+        # Minimizing node
+        else:
+            best_score = float("+inf")
+            best_move = (-1, -1)
+            # Loop through all the children of the node
+            for move in game.get_legal_moves():
+                new_score, new_move = self.minimax(game.forecast_move(move), depth - 1, True)
+                # Storing the minimum value and move
+                if new_score < best_score:
+                    best_score = new_score
+                    best_move = move
+                if self.time_left() < self.TIMER_THRESHOLD:
+                    raise Timeout()
+            return best_score, best_move
+
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
         lectures.

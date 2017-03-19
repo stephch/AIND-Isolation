@@ -1,21 +1,25 @@
 Results with a evaluation function that evaluates my moves = len(game.get_legal_moves(player))
 
+*************************
+ Evaluating: ID_Improved 
+*************************
+
 Playing Matches:
 ----------
+  Match 1: ID_Improved vs   Random      Result: 60 to 20
+  Match 2: ID_Improved vs   MM_Null     Result: 64 to 16
+  Match 3: ID_Improved vs   MM_Open     Result: 63 to 17
+  Match 4: ID_Improved vs MM_Improved   Result: 60 to 20
+  Match 5: ID_Improved vs   AB_Null     Result: 53 to 27
+  Match 6: ID_Improved vs   AB_Open     Result: 40 to 40
 tournament.py:100: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
   warnings.warn(TIMEOUT_WARNING)
-  Match 1: ID_Improved vs   Random    	Result: 14 to 6
-  Match 2: ID_Improved vs   MM_Null   	Result: 16 to 4
-  Match 3: ID_Improved vs   MM_Open   	Result: 15 to 5
-  Match 4: ID_Improved vs MM_Improved 	Result: 15 to 5
-  Match 5: ID_Improved vs   AB_Null   	Result: 13 to 7
-  Match 6: ID_Improved vs   AB_Open   	Result: 12 to 8
-  Match 7: ID_Improved vs AB_Improved 	Result: 13 to 7
+  Match 7: ID_Improved vs AB_Improved   Result: 49 to 31
 
 
 Results:
 ----------
-ID_Improved         70.00%
+ID_Improved         69.46%
 
 *************************
    Evaluating: Student   
@@ -23,18 +27,19 @@ ID_Improved         70.00%
 
 Playing Matches:
 ----------
-  Match 1:   Student   vs   Random    	Result: 16 to 4
-  Match 2:   Student   vs   MM_Null   	Result: 18 to 2
-  Match 3:   Student   vs   MM_Open   	Result: 16 to 4
-  Match 4:   Student   vs MM_Improved 	Result: 13 to 7
-  Match 5:   Student   vs   AB_Null   	Result: 13 to 7
-  Match 6:   Student   vs   AB_Open   	Result: 10 to 10
-  Match 7:   Student   vs AB_Improved 	Result: 13 to 7
+  Match 1:   Student   vs   Random      Result: 67 to 13
+  Match 2:   Student   vs   MM_Null     Result: 64 to 16
+  Match 3:   Student   vs   MM_Open     Result: 68 to 12
+  Match 4:   Student   vs MM_Improved   Result: 62 to 18
+  Match 5:   Student   vs   AB_Null     Result: 58 to 22
+  Match 6:   Student   vs   AB_Open     Result: 45 to 35
+  Match 7:   Student   vs AB_Improved   Result: 52 to 28
 
 
 Results:
 ----------
-Student             70.71%
+Student             74.29%
+
 
 
 
@@ -207,4 +212,84 @@ Student             73.57%
         return float(len(game.get_legal_moves(player)) - len(game.get_legal_moves(game.get_opponent(player))))
     else:
         return float(len(game.get_legal_moves(player)))
+
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random      Result: 65 to 15
+  Match 2: ID_Improved vs   MM_Null     Result: 66 to 14
+  Match 3: ID_Improved vs   MM_Open     Result: 61 to 19
+  Match 4: ID_Improved vs MM_Improved   Result: 55 to 25
+  Match 5: ID_Improved vs   AB_Null     Result: 56 to 24
+  Match 6: ID_Improved vs   AB_Open     Result: 41 to 39
+  Match 7: ID_Improved vs AB_Improved   Result: 45 to 35
+
+
+Results:
+----------
+
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random      Result: 72 to 8
+  Match 2:   Student   vs   MM_Null     Result: 68 to 12
+  Match 3:   Student   vs   MM_Open     Result: 63 to 17
+  Match 4:   Student   vs MM_Improved   Result: 62 to 18
+  Match 5:   Student   vs   AB_Null     Result: 58 to 22
+  Match 6:   Student   vs   AB_Open     Result: 44 to 36
+  Match 7:   Student   vs AB_Improved   Result: 52 to 28
+
+
+Results:
+----------
+Student             74.82%
+
+
+return float(len(game.get_legal_moves(player)) - 0.5*(numpy.abs((x[0]-y[0]))+numpy.abs(x[1]-y[1])))
+
+*************************
+ Evaluating: ID_Improved 
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random      Result: 65 to 15
+  Match 2: ID_Improved vs   MM_Null     Result: 65 to 15
+  Match 3: ID_Improved vs   MM_Open     Result: 59 to 21
+  Match 4: ID_Improved vs MM_Improved   Result: 58 to 22
+  Match 5: ID_Improved vs   AB_Null     Result: 45 to 35
+  Match 6: ID_Improved vs   AB_Open     Result: 34 to 46
+  Match 7: ID_Improved vs AB_Improved   Result: 41 to 39
+
+
+Results:
+----------
+ID_Improved         65.54%
+
+*************************
+   Evaluating: Student   
+*************************
+
+Playing Matches:
+----------
+  Match 1:   Student   vs   Random      Result: 72 to 8
+  Match 2:   Student   vs   MM_Null     Result: 63 to 17
+  Match 3:   Student   vs   MM_Open     Result: 54 to 26
+  Match 4:   Student   vs MM_Improved   Result: 56 to 24
+  Match 5:   Student   vs   AB_Null     Result: 54 to 26
+  Match 6:   Student   vs   AB_Open     Result: 43 to 37
+  Match 7:   Student   vs AB_Improved   Result: 38 to 42
+
+
+Results:
+----------
+Student             67.86%
+
 
